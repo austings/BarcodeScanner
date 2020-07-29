@@ -1,0 +1,116 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<style>
+    .column {
+        float: left;
+        width: 50%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .app-button {
+        margin: 0 20px;
+        display: inline-block;
+    }
+</style>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>@Model.displayMsg</p>
+</div>
+@if (!Model.displaySKU)
+{
+    <div class="text-center">
+
+        <form method="post">
+            <input type="number" min="1" asp-for="addAmount" placeholder="1" style="width:4em" />
+            <input type="text" id="upc" asp-for="upc" name="upc" placeholder="Please Enter a UPC" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <br />
+}
+@if (Model.displaySKU)
+{
+    <form method="post" name="skuForm">
+        <div style="background-color: lightgray;" class="row">
+            <div class="column">
+                <p>This UPC was not found. Please search by sku or title and then click the appropriate item.</p>
+                <input type="text" id="skuInput" oninput="hideShowSKUs()" asp-for="pickedSKU">
+            </div>
+            <div class="column">
+                <p>Click the item to count:</p>
+
+                @foreach (SelectListItem item in Model.skuList)
+                {
+                    <div style="display:none;" class="dataListItem">
+                        <button value="@item.Text" onClick="setTextBox(this.value)">
+                            @Html.Label(item.Text)
+                        </button>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </form>
+
+
+}
+<br />
+@if (!Model.displaySKU)
+{
+    <div class="row" style="float: right !important;">
+        <form class="app-button" method="post" asp-page-handler="delete">
+            <button type="submit">
+                Undo
+            </button>
+        </form>
+        <form class="app-button" method="post" asp-page-handler="edit">
+            <button type="submit">
+                Complete and Compile
+            </button>
+        </form>
+    </div>
+}
+    <script language="javascript" type="text/javascript">
+
+    @if (Model.displaySKU)
+    {
+        <text>document.getElementById("skuInput").focus();</text>
+    }
+    else
+    {
+        <text>document.getElementById("upc").focus();</text>
+    }
+
+    function setTextBox(value) {
+        document.getElementById("skuInput").value = value;
+        document.skuForm.submit();
+    }
+
+    function hideShowSKUs() {
+        var value = document.getElementById("skuInput").value;
+        var items = document.getElementsByClassName("dataListItem");
+        var maxResults = 10;
+        for (var i = 0; i < items.length; i++) {
+            if (maxResults == 0)
+                break;
+            if (items[i].textContent.toLowerCase().includes(value.toLowerCase())) {
+                items[i].style.display = "block";
+                maxResults = maxResults - 1;
+            }
+            else {
+                items[i].style.display = "none";
+            }
+        }
+    }
+    </script>
+
+
