@@ -3,4 +3,4 @@ ASP.net razorpages application to count inventory. Can use with or without a bar
 
 ![alt tag](https://github.com/austings/BarcodeScanner/blob/master/preview.png)
 
-When I was working in the library I hated scanning books and waiting a long time for a response from the server. The approach with this tool for smash it, I took puts all the bulk of wait time on startup or on the complete button. This way the worker can scan each item in rapid succession if need be.
+When I was working in the library I hated scanning books and waiting a long time for a response from the server. The approach with this tool for smash it, I took puts all the bulk of wait time on startup or on the complete button. This way the worker can scan each item in rapid succession if need be. 
